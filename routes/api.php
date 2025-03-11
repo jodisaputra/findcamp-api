@@ -14,3 +14,11 @@ Route::middleware('auth:api')->group(function () {
         return request()->user();
     });
 });
+
+// In routes/api.php
+Route::get('/test', function() {
+    return response()->json([
+        'status' => 'success',
+        'message' => 'API is working!'
+    ]);
+});
