@@ -1,9 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\GoogleController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\RegionController;
 use Illuminate\Support\Facades\Route;
+
+// Authentication routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 
 // Google OAuth routes
 Route::get('auth/google', [GoogleController::class, 'redirectToProvider']);
