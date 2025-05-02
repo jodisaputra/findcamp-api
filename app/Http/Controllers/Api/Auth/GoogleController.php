@@ -63,6 +63,8 @@ class GoogleController extends Controller
                 'user' => $user
             ]);
         } catch (\Exception $e) {
+            Log::error('Detailed error: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -132,7 +134,8 @@ class GoogleController extends Controller
                 'user' => $user
             ]);
         } catch (\Exception $e) {
-            \Log::error('Google authentication error: ' . $e->getMessage());
+            Log::error('Detailed error: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
