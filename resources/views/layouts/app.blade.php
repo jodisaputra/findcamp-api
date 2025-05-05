@@ -31,16 +31,17 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('regions.index') }}">Regions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('countries.index') }}">Countries</a>
-                        </li>
-                    </ul>
-
+                    @auth
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('regions.index') }}">Regions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('countries.index') }}">Countries</a>
+                            </li>
+                        </ul>
+                    @endauth
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
