@@ -15,4 +15,11 @@ class Country extends Model
     {
         return $this->belongsTo(Region::class);
     }
+
+    public function requirements()
+    {
+        return $this->belongsToMany(\App\Models\Requirement::class)
+            ->withPivot('is_required')
+            ->withTimestamps();
+    }
 }

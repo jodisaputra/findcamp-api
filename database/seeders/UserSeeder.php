@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'google_id' => null,
             'avatar' => 'https://ui-avatars.com/api/?name=Admin+User&background=random',
+            'is_admin' => true,
         ]);
     }
 }

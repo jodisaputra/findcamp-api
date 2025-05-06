@@ -40,6 +40,20 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('countries.index') }}">Countries</a>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="requirementsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Requirements
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="requirementsDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('requirements.index') }}">All Requirements</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('requirements.manage-country') }}">Manage by Country</a></li>
+                                </ul>
+                            </li>
+                            @if(Auth::user() && (Auth::user()->is_admin ?? false))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('requirement-uploads.index') }}">Requirement Uploads</a>
+                                </li>
+                            @endif
                         </ul>
                     @endauth
                     <!-- Right Side Of Navbar -->

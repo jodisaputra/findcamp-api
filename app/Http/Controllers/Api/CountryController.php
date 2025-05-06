@@ -124,4 +124,9 @@ class CountryController extends Controller
 
         return response()->json(['message' => 'Country deleted successfully']);
     }
+
+    public function getRequirements(Country $country)
+    {
+        return response()->json($country->requirements);
+    }
 }
