@@ -33,6 +33,14 @@
                         </div>
 
                         <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="requires_payment" name="requires_payment" value="1" 
+                                    {{ old('requires_payment', $requirement->requires_payment) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="requires_payment">Requires Payment</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label">Countries</label>
                             <div class="row">
                                 @foreach($countries as $country)

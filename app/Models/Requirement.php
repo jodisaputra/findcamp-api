@@ -11,11 +11,13 @@ class Requirement extends Model
 
     protected $fillable = [
         'requirement_name',
-        'status'
+        'status',
+        'requires_payment'
     ];
 
     protected $casts = [
-        'status' => 'boolean'
+        'status' => 'boolean',
+        'requires_payment' => 'boolean'
     ];
 
     public function countries()

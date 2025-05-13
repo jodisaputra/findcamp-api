@@ -27,6 +27,7 @@
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Status</th>
+                                    <th>Payment Required</th>
                                     <th>Countries</th>
                                     <th>Actions</th>
                                 </tr>
@@ -39,6 +40,11 @@
                                         <td>
                                             <span class="badge {{ $requirement->status ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $requirement->status ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge {{ $requirement->requires_payment ? 'bg-warning' : 'bg-secondary' }}">
+                                                {{ $requirement->requires_payment ? 'Yes' : 'No' }}
                                             </span>
                                         </td>
                                         <td>

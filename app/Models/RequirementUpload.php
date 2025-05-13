@@ -16,6 +16,9 @@ class RequirementUpload extends Model
         'file_path',
         'status',
         'admin_note',
+        'payment_path',
+        'payment_status',
+        'payment_note',
     ];
 
     public function user()
@@ -31,5 +34,15 @@ class RequirementUpload extends Model
     public function requirement()
     {
         return $this->belongsTo(Requirement::class);
+    }
+
+    public function getFileUrlAttribute()
+    {
+        return $this->file_path ? asset('storage/' . $this->file_path) : null;
+    }
+
+    public function getPaymentUrlAttribute()
+    {
+        return $this->payment_path ? asset('storage/' . $this->payment_path) : null;
     }
 }

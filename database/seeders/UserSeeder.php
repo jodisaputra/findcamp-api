@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin User',
-            'email' => 'jodi.saragih.29@gmail.com',
+            'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
             'google_id' => null,
             'avatar' => 'https://ui-avatars.com/api/?name=Admin+User&background=random',

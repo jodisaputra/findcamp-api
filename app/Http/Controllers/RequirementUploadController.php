@@ -31,6 +31,13 @@ class RequirementUploadController extends Controller
         return Storage::disk('public')->download($upload->file_path);
     }
 
+    // Download the payment file
+    public function paymentFile($id)
+    {
+        $upload = RequirementUpload::findOrFail($id);
+        return Storage::disk('public')->download($upload->payment_path);
+    }
+
     // Validate (accept/refuse) an upload
     public function validateUpload(Request $request, $id)
     {
@@ -43,5 +50,19 @@ class RequirementUploadController extends Controller
         $upload->admin_note = $request->admin_note;
         $upload->save();
         return redirect()->route('requirement-uploads.index')->with('success', 'Status updated!');
+    }
+
+    // Validate (accept/refuse) a payment
+    public function validatePayment(Request $request, $id)
+    {
+        $request->validate([
+            'payment_status' => 'required|in:accepted,refused',
+            'payment_note' => 'nullable|string',
+        ]);
+        $upload = RequirementUpload::findOrFail($id);
+        $upload->payment_status = $request->payment_status;
+        $upload->payment_note = $request->payment_note;
+        $upload->save();
+        return redirect()->route('requirement-uploads.index')->with('success', 'Payment status updated!');
     }
 }

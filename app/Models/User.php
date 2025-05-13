@@ -42,4 +42,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['profile_image_url'];
+
+    public function getProfileImageUrlAttribute()
+    {
+        if (!$this->profile_image_path) {
+            return null;
+        }
+
+        if (str_starts_with($this->profile_image_path, 'http')) {
+            return $this->profile_image_path;
+        }
+
+        return asset('storage/' . $this->profile_image_path);
+    }
 }
