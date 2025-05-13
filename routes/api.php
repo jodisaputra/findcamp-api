@@ -43,6 +43,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('requirement-uploads', [RequirementUploadController::class, 'index']);
     Route::post('requirement-uploads', [RequirementUploadController::class, 'store']);
     Route::get('requirement-uploads/{country_id}/{requirement_id}', [RequirementUploadController::class, 'show']);
+    Route::post('requirement-uploads/{id}/payment', [RequirementUploadController::class, 'uploadPayment']);
     
     // Admin routes
     Route::middleware('admin')->group(function () {

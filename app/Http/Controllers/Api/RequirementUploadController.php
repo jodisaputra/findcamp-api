@@ -84,7 +84,8 @@ class RequirementUploadController extends Controller
         $user = Auth::user();
         \Log::info("[RequirementUpload] Fetch attempt: user_id=" . ($user ? $user->id : 'null') . ", country_id=$country_id, requirement_id=$requirement_id");
 
-        $upload = RequirementUpload::where('user_id', $user->id)
+        $upload = RequirementUpload::with('requirement')
+            ->where('user_id', $user->id)
             ->where('country_id', $country_id)
             ->where('requirement_id', $requirement_id)
             ->latest()->first();
@@ -164,7 +165,7 @@ class RequirementUploadController extends Controller
             ], 400);
         }
 
-        if ($upload->payment_path) {
+        if ($upload->payment_path && $upload->payment_status !== 'refused') {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Payment document already uploaded'
@@ -272,9 +273,10 @@ class RequirementUploadController extends Controller
             $upload = RequirementUpload::findOrFail($id);
             \Log::info("[RequirementUpload] Found upload: id={$upload->id}, user_id={$upload->user_id}, payment_path={$upload->payment_path}");
             
-            // Check if the user has access to this file
-            if ($upload->user_id !== Auth::user()->id) {
-                \Log::warning("[RequirementUpload] Unauthorized access attempt: requested_user_id=" . Auth::user()->id . ", file_user_id={$upload->user_id}");
+            // Allow if user is owner or admin
+            $user = Auth::user();
+            if (!($user && ($upload->user_id == $user->id || ($user->is_admin ?? false)))) {
+                \Log::warning("[RequirementUpload] Unauthorized access attempt: requested_user_id=" . ($user ? $user->id : 'null') . ", file_user_id={$upload->user_id}");
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Unauthorized access'

@@ -25,13 +25,15 @@ class RequirementController extends Controller
         $validated = $request->validate([
             'requirement_name' => 'required|string|max:255',
             'status' => 'boolean',
+            'requires_payment' => 'sometimes|boolean',
             'countries' => 'array',
             'countries.*' => 'exists:countries,id'
         ]);
 
         $requirement = Requirement::create([
             'requirement_name' => $validated['requirement_name'],
-            'status' => $validated['status'] ?? true
+            'status' => $validated['status'] ?? true,
+            'requires_payment' => $request->has('requires_payment'),
         ]);
 
         if (isset($validated['countries'])) {
@@ -53,13 +55,15 @@ class RequirementController extends Controller
         $validated = $request->validate([
             'requirement_name' => 'required|string|max:255',
             'status' => 'boolean',
+            'requires_payment' => 'sometimes|boolean',
             'countries' => 'array',
             'countries.*' => 'exists:countries,id'
         ]);
 
         $requirement->update([
             'requirement_name' => $validated['requirement_name'],
-            'status' => $validated['status'] ?? true
+            'status' => $validated['status'] ?? true,
+            'requires_payment' => $request->has('requires_payment'),
         ]);
 
         if (isset($validated['countries'])) {
