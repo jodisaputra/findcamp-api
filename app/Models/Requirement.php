@@ -12,7 +12,8 @@ class Requirement extends Model
     protected $fillable = [
         'requirement_name',
         'status',
-        'requires_payment'
+        'requires_payment',
+        'notes',
     ];
 
     protected $casts = [

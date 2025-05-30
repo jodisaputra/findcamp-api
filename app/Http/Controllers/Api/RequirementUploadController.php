@@ -48,6 +48,7 @@ class RequirementUploadController extends Controller
         // Check if user already has an upload for this requirement
         $existingUpload = RequirementUpload::where('user_id', $request->user()->id)
             ->where('requirement_id', $request->requirement_id)
+            ->where('country_id', $request->country_id)
             ->latest()
             ->first();
 

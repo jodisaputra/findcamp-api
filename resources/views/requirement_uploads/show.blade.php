@@ -61,6 +61,20 @@
     @endif
     @endif
 
+    @if($upload->admin_document_path)
+        <a href="{{ asset('storage/'.$upload->admin_document_path) }}" target="_blank" class="btn btn-success mb-2">Download Admin Document</a>
+    @endif
+    <form method="POST" action="{{ route('requirement-uploads.upload-admin-document', $upload->id) }}" enctype="multipart/form-data" class="mb-3">
+        @csrf
+        <div class="input-group">
+            <input type="file" name="admin_document" accept="application/pdf" class="form-control" required>
+            <button type="submit" class="btn btn-primary">Upload Admin Document</button>
+        </div>
+        @error('admin_document')
+            <div class="text-danger small">{{ $message }}</div>
+        @enderror
+    </form>
+
     <div class="card">
         <div class="card-body">
             <h5>Validate Upload</h5>

@@ -37,4 +37,5 @@ Route::get('requirement-uploads/file/{id}', [RequirementUploadController::class,
 Route::get('requirement-uploads/payment-file/{id}', [RequirementUploadController::class, 'paymentFile'])->name('requirement-uploads.payment-file');
 Route::post('requirement-uploads/{id}/validate', [RequirementUploadController::class, 'validateUpload'])->name('requirement-uploads.validate');
 Route::post('requirement-uploads/{id}/validate-payment', [RequirementUploadController::class, 'validatePayment'])->name('requirement-uploads.validate-payment');
+Route::post('/requirement-uploads/{id}/upload-admin-document', [RequirementUploadController::class, 'uploadAdminDocument'])->name('requirement-uploads.upload-admin-document');
 Route::resource('campuses', CampusController::class);

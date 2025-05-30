@@ -26,6 +26,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
+                                    <th>Notes</th>
                                     <th>Status</th>
                                     <th>Payment Required</th>
                                     <th>Countries</th>
@@ -37,6 +38,13 @@
                                     <tr>
                                         <td>{{ $requirement->id }}</td>
                                         <td>{{ $requirement->requirement_name }}</td>
+                                        <td>
+                                            @if($requirement->notes)
+                                                <span class="text-muted">{{ Str::limit($requirement->notes, 50) }}</span>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <span class="badge {{ $requirement->status ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $requirement->status ? 'Active' : 'Inactive' }}

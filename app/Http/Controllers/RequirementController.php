@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Requirement;
 use App\Models\Country;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RequirementController extends Controller
 {
@@ -24,21 +25,16 @@ class RequirementController extends Controller
     {
         $validated = $request->validate([
             'requirement_name' => 'required|string|max:255',
+            'notes' => 'nullable|string',
             'status' => 'boolean',
-            'requires_payment' => 'sometimes|boolean',
-            'countries' => 'array',
+            'requires_payment' => 'boolean',
+            'countries' => 'required|array',
             'countries.*' => 'exists:countries,id'
         ]);
 
-        $requirement = Requirement::create([
-            'requirement_name' => $validated['requirement_name'],
-            'status' => $validated['status'] ?? true,
-            'requires_payment' => $request->has('requires_payment'),
-        ]);
+        $requirement = Requirement::create($validated);
 
-        if (isset($validated['countries'])) {
-            $requirement->countries()->attach($validated['countries']);
-        }
+        $requirement->countries()->sync($request->countries);
 
         return redirect()->route('requirements.index')
             ->with('success', 'Requirement created successfully.');
@@ -54,21 +50,15 @@ class RequirementController extends Controller
     {
         $validated = $request->validate([
             'requirement_name' => 'required|string|max:255',
+            'notes' => 'nullable|string',
             'status' => 'boolean',
-            'requires_payment' => 'sometimes|boolean',
-            'countries' => 'array',
+            'requires_payment' => 'boolean',
+            'countries' => 'required|array',
             'countries.*' => 'exists:countries,id'
         ]);
 
-        $requirement->update([
-            'requirement_name' => $validated['requirement_name'],
-            'status' => $validated['status'] ?? true,
-            'requires_payment' => $request->has('requires_payment'),
-        ]);
-
-        if (isset($validated['countries'])) {
-            $requirement->countries()->sync($validated['countries']);
-        }
+        $requirement->update($validated);
+        $requirement->countries()->sync($request->countries);
 
         return redirect()->route('requirements.index')
             ->with('success', 'Requirement updated successfully.');

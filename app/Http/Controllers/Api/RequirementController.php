@@ -12,9 +12,34 @@ class RequirementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $requirements = Requirement::all();
+        $countryId = $request->query('country_id');
+        
+        $query = Requirement::query()
+            ->where('status', true)
+            ->with(['countries' => function ($query) {
+                $query->select('countries.id', 'countries.name')
+                    ->withPivot('is_required');
+            }]);
+
+        if ($countryId) {
+            $query->whereHas('countries', function ($query) use ($countryId) {
+                $query->where('countries.id', $countryId);
+            });
+        }
+
+        $requirements = $query->get()->map(function ($requirement) use ($countryId) {
+            $country = $requirement->countries->firstWhere('id', $countryId);
+            return [
+                'id' => $requirement->id,
+                'requirement_name' => $requirement->requirement_name,
+                'notes' => $requirement->notes,
+                'requires_payment' => $requirement->requires_payment,
+                'is_required' => $country ? $country->pivot->is_required : false,
+            ];
+        });
+
         return response()->json($requirements);
     }
 
@@ -25,7 +50,9 @@ class RequirementController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'requirement_name' => 'required|string|max:255',
-            'status' => 'boolean'
+            'status' => 'required|boolean',
+            'requires_payment' => 'required|boolean',
+            'notes' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -50,8 +77,10 @@ class RequirementController extends Controller
     public function update(Request $request, Requirement $requirement)
     {
         $validator = Validator::make($request->all(), [
-            'requirement_name' => 'string|max:255',
-            'status' => 'boolean'
+            'requirement_name' => 'sometimes|required|string|max:255',
+            'status' => 'sometimes|required|boolean',
+            'requires_payment' => 'sometimes|required|boolean',
+            'notes' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {

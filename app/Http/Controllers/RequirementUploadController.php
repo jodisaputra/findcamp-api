@@ -65,4 +65,23 @@ class RequirementUploadController extends Controller
         $upload->save();
         return redirect()->route('requirement-uploads.index')->with('success', 'Payment status updated!');
     }
+
+    // Upload admin document
+    public function uploadAdminDocument(Request $request, $id)
+    {
+        $upload = RequirementUpload::findOrFail($id);
+        $request->validate([
+            'admin_document' => 'required|file|mimes:pdf|max:10240',
+        ]);
+        if ($request->hasFile('admin_document')) {
+            // Hapus file lama jika ada
+            if ($upload->admin_document_path) {
+                \Storage::disk('public')->delete($upload->admin_document_path);
+            }
+            $path = $request->file('admin_document')->store('admin_documents', 'public');
+            $upload->admin_document_path = $path;
+            $upload->save();
+        }
+        return back()->with('success', 'Admin document uploaded!');
+    }
 }

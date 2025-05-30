@@ -19,6 +19,7 @@ class RequirementUpload extends Model
         'payment_path',
         'payment_status',
         'payment_note',
+        'admin_document_path',
     ];
 
     public function user()
